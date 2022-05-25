@@ -1,0 +1,318 @@
+doctype html
+html(lang='en' dir='')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width,initial-scale=1')
+    meta(http-equiv='X-UA-Compatible' content='ie=edge')
+    title Counter App
+    link(rel='shortcut icon' href='/auth/assets/img/icon.png' type='image/x-icon')
+    link(href='https://fonts.googleapis.com/css?family=Nunito:300,400,400i,600,700,800,900' rel='stylesheet')
+    link(href='/accounts/dist-assets/css/themes/lite-blue.min.css' rel='stylesheet')
+    link(href='/accounts/dist-assets/css/plugins/perfect-scrollbar.min.css' rel='stylesheet')
+    link(rel="stylesheet", href="/accounts/dist-assets/css/plugins/datatables.min.css" )
+    link(rel="stylesheet", href="/styles/general.css")
+    // DATABLES
+    link(rel="stylesheet", href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css")
+    link(rel="stylesheet", href="https://cdn.datatables.net/buttons/1.6.4/css/buttons.dataTables.min.css")
+    
+  body.text-left
+    .app-admin-wrap.layout-sidebar-large
+      .main-header
+        .menu-toggle
+          div
+          div
+          div
+        .d-flex.align-items-center
+        .logo
+         
+        
+          
+         
+        div(style='margin: auto')
+        .header-part-right
+          // Full screen toggle
+          i.i-Full-Screen.header-icon.d-none.d-sm-inline-block(data-fullscreen='')
+          
+          
+          .dropdown
+            .user.col.align-self-end
+              
+              img#userDropdown(src='/assets/images/avatar.png' alt='' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
+              .dropdown-menu.dropdown-menu-right(aria-labelledby='userDropdown')
+                .dropdown-header
+                  i.i-Lock-User.mr-1
+                  | #{user.first_name} #{user.last_name}
+                
+                a.dropdown-item(href='/logout') Sign out
+      .side-content-wrap
+        
+
+        .sidebar-left.open.rtl-ps-none(data-perfect-scrollbar='' data-suppress-scroll-x='true')
+          ul.navigation-left
+            li.nav-item
+              a.nav-item-hold(href='/account/')
+                i.nav-icon.i-Building
+                span.nav-text Buildings
+              .triangle
+            
+           
+            
+        .sidebar-overlay        
+            
+        
+          
+          
+          
+        
+      // =============== Left side End ================
+      .main-content-wrap.sidenav-open.d-flex.flex-column
+        // ============ Body content start =============
+        .row 
+         .col-md-12
+          != messages('message', locals)
+        .row 
+         .col-md-12 
+          block content
+  block modals
+                      
+                                    
+  script(src='/accounts/dist-assets/js/plugins/jquery-3.3.1.min.js')
+  script(src='/accounts/dist-assets/js/plugins/bootstrap.bundle.min.js')
+  script(src='/accounts/dist-assets/js/plugins/perfect-scrollbar.min.js')
+  script(src='/accounts/dist-assets/js/scripts/script.min.js')
+  script(src='/accounts/dist-assets/js/scripts/sidebar.large.script.min.js')
+  script(src='/accounts/dist-assets/js/plugins/datatables.min.js')
+  script(src='/accounts/dist-assets/js/scripts/datatables.script.min.js')
+  script(src='/accounts/dist-assets/js/scripts/customizer.script.min.js')
+  script(src='/libraries/coupon.js')
+  // AXIOS
+  script(src="https://unpkg.com/axios/dist/axios.min.js") 
+
+  script(src="/libraries/get_subscription_plans.js") 
+  script(src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js")
+  script(src="https://cdn.datatables.net/buttons/1.6.4/js/dataTables.buttons.min.js")
+  script(src="https://cdn.datatables.net/buttons/1.6.4/js/buttons.flash.min.js")
+  script(src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js")
+  script(src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js")
+  script(src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js")
+  script(src="https://cdn.datatables.net/buttons/1.6.4/js/buttons.html5.min.js")
+  script(src="https://cdn.datatables.net/buttons/1.6.4/js/buttons.print.min.js")
+  script(src="/assets/js/general.js")
+  script(src="https://cdn.jsdelivr.net/npm/chart.js")
+  script.
+    
+    
+  script.
+    const report_id = document.getElementById("report_id").value;
+    setInterval(()=>{
+      axios.get('/account/realtime_report/'+report_id).then((response)=>{
+         const data = response.data;
+
+      
+         // totals
+         
+         document.getElementById("enter").innerHTML = data.enter;
+         document.getElementById("leave").innerHTML = data.leave;
+         document.getElementById("passings").innerHTML = data.passings;
+         document.getElementById("returns").innerHTML = data.returns;
+         document.getElementById("total_").innerHTML = data.total;
+         console.log(data)
+        
+         
+
+      }).catch((error)=>{
+        console.log(error)
+      })
+    },5000)
+  
+  script.
+    const building_id = document.getElementById("building_id").value;
+    const labels = JSON.parse(document.getElementById("labels").value);
+    
+    const data = {
+      labels: labels,
+      datasets: [{
+        label: 'Todays Report',
+        data: JSON.parse(document.getElementById("data").value),
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+          'rgba(255, 205, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(201, 203, 207, 0.2)'
+        ],
+        borderColor: [
+          'rgb(255, 99, 132)',
+          'rgb(255, 159, 64)',
+          'rgb(255, 205, 86)',
+          'rgb(75, 192, 192)',
+          'rgb(54, 162, 235)',
+          'rgb(153, 102, 255)',
+          'rgb(201, 203, 207)'
+        ],
+        borderWidth: 1
+      }]
+    };
+    const config = {
+      type: 'bar',
+      data: data,
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      },
+    };
+    const myChart = new Chart(
+    document.getElementById('myChart'),
+      config
+    );
+    setInterval(()=>{
+      axios.get('/account/realtime/'+building_id).then((response)=>{
+         const data = response.data;
+         console.log(data)
+         // totals
+         document.getElementById("todays_total").innerHTML = data.todays_total;
+         document.getElementById("weeks_total").innerHTML = data.weeks_total;
+         document.getElementById("month_total").innerHTML = data.month_total;
+         // graphest
+
+         // events
+         let event = data.event;
+         if(event !== null)
+         {
+          
+             let id = 'e_'+event._id
+             document.getElementById(id).innerHTML = event.total
+           
+         }
+        myChart.data.datasets[0].data = data.data;
+        myChart.data.labels = data.labels;
+        myChart.update();
+
+      }).catch((error)=>{
+        console.log(error)
+      })
+
+    },5000)
+  
+  script.
+   $('#report_breakdown').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget) // Button that triggered the modal
+      var data = button.data('whatever') // Extract info from data-* attributes
+
+      var count = data.count
+      
+      let html = `
+      <table class='table'>
+       <thead>
+        <tr>
+         <th>Date</th>
+         <th>Start Time</th>
+         <th>End Time</th>
+         <th>Entry</th>
+         <th>Leave</th>
+         <th>Pass</th>
+         <th>Return</th>
+        </tr>
+       </thead>
+       <tbody>
+        ${
+          count.length < 1 ? `
+          <tr>
+          <td style='text-align:center' colspan=7>No data found</td>
+          </tr>`
+          :`
+            ${
+              count.slice(0).reverse().map((x)=>{
+                return `<tr>
+                <td>${data.date}</td>
+                <td>${x.StartTime}</td>
+                <td>${x.EndTime}</td>
+                <td>${x.Enters}</td>
+                <td>${x.Exits}</td>
+                <td>${x.Passings}</td>
+                <td>${x.Returns}</td>
+                </tr>`
+              }).join(' ')
+            }
+          `
+        }
+       </tbody>
+      </table>
+      `
+      document.getElementById("breakdown_data").innerHTML = html;
+     
+
+        
+    })
+  script.
+   $('#viewproperties').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget) // Button that triggered the modal
+      var data = button.data('whatever') // Extract info from data-* attributes
+    
+      let html = `
+      <table class='table'>
+      <tbody>
+       <tr>
+        <td><strong>Version</strong></td>
+        <td>${data.Version}</td>
+       </tr>
+       <tr>
+        <td><strong>TransmitTime</strong></td>
+        <td>${data.TransmitTime}</td>
+       </tr>
+       <tr>
+        <td><strong>MacAddress</strong></td>
+        <td>${data.MacAddress}</td>
+       </tr>
+        <tr>
+        <td><strong>IpAddress</strong></td>
+        <td>${data.IpAddress}</td>
+       </tr>
+        <tr>
+        <td><strong>ConnectionType</strong></td>
+        <td>${data.ConnectionType}</td>
+       </tr>
+       <tr>
+        <td><strong>IpAddressMethod</strong></td>
+        <td>${data.IpAddressMethod}</td>
+       </tr>
+       <tr>
+        <td><strong>HostName</strong></td>
+        <td>${data.HostName}</td>
+       </tr>
+       <tr>
+        <td><strong>Timezone</strong></td>
+        <td>${data.Timezone}</td>
+       </tr>
+       <tr>
+        <td><strong>DST</strong></td>
+        <td>${data.DST}</td>
+       </tr>
+       <tr>
+        <td><strong>HwPlatform</strong></td>
+        <td>${data.HwPlatform}</td>
+       </tr>
+       <tr>
+        <td><strong>SerialNumber</strong></td>
+        <td>${data.SerialNumber}</td>
+       </tr>
+       <tr>
+        <td><strong>DeviceType</strong></td>
+        <td>${data.DeviceType}</td>
+       </tr>
+        <tr>
+        <td><strong>SwRelease</strong></td>
+        <td>${data.SwRelease}</td>
+       </tr>
+      </tbody>
+      </table>`
+      document.getElementById("view_properties").innerHTML = html;
+     
+
+        
+    })

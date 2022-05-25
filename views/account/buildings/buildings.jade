@@ -1,0 +1,49 @@
+extends ../layout
+block content 
+    .card 
+        .card-header 
+            strong Buildings
+            div(style='float:right;')
+                button.btn.btn-dark.btn-sm(data-toggle='modal' data-target='#addNewBuilding') Add New Building
+
+        .card-body 
+            table.table.mytable(style='width:100%')
+                thead
+                    tr
+                        
+                        th Name
+                        th Actions
+                tbody
+                    each x in buildings 
+                        tr 
+                          
+                            td=x.name 
+                            td
+                                .dropdown.show
+                                    a#dropdownMenuLink.dropdown-toggle(href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
+                                        | More Options
+                                    .dropdown-menu(aria-labelledby='dropdownMenuLink')
+                                        a.dropdown-item(href="/account/outlets/#{x.id}"  ) View Real Time Data
+
+block modals
+ .modal.fade#addNewBuilding(tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
+        .modal-dialog.modal-md
+          .modal-content
+            .modal-header
+              h5#exampleModalCenterTitle.modal-title Add New Building
+              button.close(type='button' data-dismiss='modal' aria-label='Close')
+                span(aria-hidden='true') ×
+            .modal-body     
+              .row 
+               .col-md-12 
+                form.form(action="/account/add_new_building",method='POST')
+                  
+                  .form-group 
+                    label(for="device_type") Building Name
+                    input.form-control(type="text" name='name' required) 
+                    
+
+                  .form-group 
+                   div(style='float:right')
+                    button.btn.btn-dark.btn-sm Save
+

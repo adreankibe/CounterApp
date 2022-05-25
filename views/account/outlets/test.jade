@@ -1,0 +1,76 @@
+extends ../layout
+block content 
+    .card 
+        .card-header 
+            
+            strong 
+             a(href="/account")
+              i.i.i-Arrow-Out-Left 
+             | Outlets - #{building.name}
+            div(style='float:right;')
+                button.btn.btn-dark.btn-sm(data-toggle='modal' data-target='#addNewOutlet') Add New Outlet
+
+        .card-body 
+            table.table.mytable(style='width:100%')
+                thead
+                    tr
+                        th Name 
+                        th Device ID 
+                        th Ip Address
+                        
+                       
+                        th Actions
+                tbody
+                    each x in outlets
+                        tr 
+                            td=x.name
+                            td=x.device_id
+                            td=x.ip_address
+                          
+                            td
+                                .dropdown.show
+                                    a#dropdownMenuLink.dropdown-toggle(href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
+                                        | More Options
+                                    .dropdown-menu(aria-labelledby='dropdownMenuLink')
+                                        a.dropdown-item(href="/account/reports/#{x.device_id}/#{x.id}/#{building.id}"  ) View Report Data
+                                        a.dropdown-item(href="#" data-toggle='modal' data-target='#viewproperties' data-whatever='#{JSON.stringify(x.properties)}' ) View Device Properties
+
+block modals
+ .modal.fade#viewproperties(tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
+        .modal-dialog.modal-lg
+          .modal-content
+            .modal-header
+              h5#exampleModalCenterTitle.modal-title View Properties
+              button.close(type='button' data-dismiss='modal' aria-label='Close')
+                span(aria-hidden='true') ×
+            .modal-body   
+              .row 
+               .col-md-12
+                #view_properties
+ .modal.fade#addNewOutlet(tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
+        .modal-dialog.modal-md
+          .modal-content
+            .modal-header
+              h5#exampleModalCenterTitle.modal-title Add New Outlet
+              button.close(type='button' data-dismiss='modal' aria-label='Close')
+                span(aria-hidden='true') ×
+            .modal-body     
+              .row 
+               .col-md-12 
+                form.form(action="/account/add_new_outlet/#{building.id}",method='POST')
+                  .form-group 
+                   label(for="product_name") Outlet Name
+                   input.form-control(type="text" name='name' required) 
+                  .form-group 
+                    label(for="device_type") Device Id
+                    input.form-control(type="text" name='device_id' required) 
+                  .form-group 
+                    label(for="device_type") Ip Address
+                    input.form-control(type="text" name='ip_address' required) 
+                  
+                    
+
+                  .form-group 
+                   div(style='float:right')
+                    button.btn.btn-dark.btn-sm Save
+

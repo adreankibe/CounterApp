@@ -1,0 +1,83 @@
+extends ../layout
+block content 
+    .card 
+        .card-header 
+
+            strong 
+                a(href="/account/outlets/#{building.id}")
+                    i.i.i-Arrow-Out-Left 
+                |  #{building.name} / #{outlet.name}
+
+        .card-body 
+            
+            table.table.mytable(style='width:100%')
+                thead
+                    tr
+                        th Device ID
+                        th Date
+                        th Enter 
+                        th Leave 
+                        th Pass 
+                        th Return 
+                        th Total
+                        th Actions
+
+                tbody
+                    each x in reports
+                        tr 
+                            td=x.device_id
+                            td=x.date 
+                            td
+                                if x.date === today
+                                    input#report_id(type="hidden" value=x.id)
+                                    p(id='enter')  #{x.enter}
+                                if x.date !== today
+                                    |  #{x.enter}  
+                            td
+                                if x.date === today
+                                    p(id='leave')  #{x.leave}
+                                if x.date !== today
+                                    |  #{x.leave} 
+                            td
+                                if x.date === today
+                                    p(id='passings')  #{x.passings}
+                                if x.date !== today
+                                    |  #{x.passings} 
+                            td
+                                if x.date === today
+                                    p(id='returns')  #{x.returns}
+                                if x.date !== today
+                                    |  #{x.returns}
+                            td
+                                if x.date === today
+                                    p(id='total_')  #{x.total}
+                                if x.date !== today
+                                    |  #{x.total}  
+
+
+                            td 
+
+                                .dropdown.show
+                                    a#dropdownMenuLink.dropdown-toggle(href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
+                                        | More Options
+                                    .dropdown-menu(aria-labelledby='dropdownMenuLink')
+                                        a.dropdown-item(href="#" data-toggle='modal' data-target='#report_breakdown' data-whatever='#{JSON.stringify(x)}' ) View Report BreakDown
+
+
+
+
+block modals
+    .modal.fade#report_breakdown(tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
+        .modal-dialog.modal-lg
+            .modal-content
+                .modal-header
+                    h5#exampleModalCenterTitle.modal-title View Report Breakdown
+                    button.close(type='button' data-dismiss='modal' aria-label='Close')
+                        span(aria-hidden='true') ×
+                .modal-body     
+                    .row 
+                        .col-md-12 
+                            #breakdown_data
+
+
+
