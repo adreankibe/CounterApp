@@ -1,3 +1,3 @@
 module.exports  = {
-    uri:"mongodb://localhost/mall_counter",
+    uri:"mongodb://localhost/TwoRivers_mall_counter",
 }

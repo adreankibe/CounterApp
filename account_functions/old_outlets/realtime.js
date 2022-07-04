@@ -29,7 +29,10 @@ const realtime = (req, res) => {
     const minute = addZero(currentdate.getMinutes())
     const time = hour + ":" + minute;
     Outlet.find({ id: id }, (err, outlets) => {
+        Report.find({}, (err, reports) => {
 
+
+            Event.findOne({ id: id, status: 'Active' }, (err, event) => {
 
                 let todays_total = 0;
                 let weeks_total = 0;
@@ -64,9 +67,34 @@ const realtime = (req, res) => {
                         })
                     }
                 })
-                
-            
-        
+                setTimeout(() => {
+                    if(event)
+                    {
+                        let query = { _id: event.id }
+                        let data = {}
+                        let tot = parseInt(event.total) - parseInt(event.previous);
+                        tot = parseInt(tot) + parseInt(todays_total)
+                        data.total = parseInt(tot);
+                        data.previous = parseInt(todays_total)
+                        console.log(data)
+                        Event.updateOne(query, data, () => {
+                            Event.findById(event.id, (err, event) => {
+                             console.log(data) 
+                                res.send({ success: true, todays_total: todays_total, weeks_total: weeks_total, month_total: month_total, event: event,data:data,labels:labels })
+                            })
+                        })
+                    }
+                    else
+                    {
+                        res.send({ success: true, todays_total: todays_total, weeks_total: weeks_total, month_total: month_total, event:null,data:data,labels:labels})
+                  
+                    }
+                    
+
+                }, 4500)
+
+            })
+        })
     })
 
 }

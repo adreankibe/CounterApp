@@ -2,7 +2,7 @@
 const passport = require('passport');
 
 const loginPost = passport.authenticate('User',{
-    successRedirect:'/account',
+    successRedirect:'/account/dashboard',
     failureRedirect:'/',
     failureFlash:true,
     session:true

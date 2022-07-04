@@ -1,0 +1,191 @@
+extends ../layout
+block content 
+  .row 
+    .col-md-12 
+      h4 
+        a(href="/account") 
+          i.i.i-Arrow-Out-Left 
+        | #{building.name}
+      div(style='float:right')
+       button.btn.btn-dark.btn-sm(data-toggle='modal' data-target='#Filter') Filter
+  
+  .row.mt-4 
+    input#building_id(type="hidden" value=building.id)
+    .col-md-4 
+      .card 
+        .card-body(style='border-left:5px solid blue') 
+          h6 Today's Total ( Entries )
+          h4#todays_total #{todays_total}
+    .col-md-4 
+      .card 
+        .card-body(style='border-left:5px solid green')
+          h6 Current Week Total ( Entries )
+          h4#weeks_total #{weeks_total}
+    .col-md-4 
+      .card 
+        .card-body(style='border-left:5px solid orange')
+          h6 Current Month Total ( Entries )
+          h4#month_total #{month_total}
+  .row.mt-4
+    .col-md-8 
+      .card 
+        .card-body
+          input#data(type="hidden" value='#{JSON.stringify(data)}')
+          input#labels(type="hidden" value='#{JSON.stringify(labels)}')
+          canvas#myChart
+
+        
+    .col-md-4
+      .row 
+        .col-md-12 
+          .card 
+            .card-header 
+              strong Outlets
+              div(style='float:right')
+                button.btn.btn-dark.btn-sm(data-toggle='modal' data-target='#addNewOutlet') 
+                  strong
+                    i.i.i-Add 
+                    | Add
+            .card-body
+              .row 
+                .col-md-12  
+                 if outlets.length < 1
+                          div(style='text-align:center')
+                            p No outlets found.
+                 if outlets.length > 0
+                  table.table 
+
+                    tbody
+
+                        each x in outlets
+                          tr 
+                            td=x.name
+
+                            td
+                              .dropdown.show
+                                a#dropdownMenuLink.dropdown-toggle(href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
+                                  | More Options
+                                .dropdown-menu(aria-labelledby='dropdownMenuLink')
+                                  a.dropdown-item(href="/account/reports//#{x.id}/#{building.id}"  ) View Report Data
+                                  a.dropdown-item(href="#" data-toggle='modal' data-target='#viewproperties' data-whatever='#{JSON.stringify(x.properties)}' ) View Device Properties
+
+      .row.mt-4
+        .col-md-12 
+          .card 
+            .card-header 
+              strong Events / Holidays
+              div(style='float:right')
+                button.btn.btn-dark.btn-sm(data-toggle='modal' data-target='#addNewEvent') 
+                  strong
+                    i.i.i-Add 
+                    | Add
+
+            .card-body 
+             if events.length < 1
+               div(style='text-align:center')
+                            p No events / holidays found.
+             if events.length > 0
+              table.table 
+
+                    tbody
+
+                        each x,index in events
+                          tr 
+                            td=x.name
+                            td
+                             if x.status === 'Active'
+                              span.badge.badge-success Ongoing 
+                             if x.status !== 'Active'
+                              span ....
+                            td
+                             p(id='e_'+x.id) #{x.total}
+                              
+
+
+
+
+
+block modals
+  .modal.fade#Filter(tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
+    .modal-dialog.modal-sm
+      .modal-content
+        .modal-header
+          h5#exampleModalCenterTitle.modal-title Filter Report
+          button.close(type='button' data-dismiss='modal' aria-label='Close')
+            span(aria-hidden='true') ×
+        .modal-body     
+          .row 
+            .col-md-12 
+              form.form(action="/account/filter_reports/#{building.id}" method='POST')
+                .form-group 
+                  label(for="device_type") Date
+                  input.form-control(type="date" name='start_date' required) 
+
+                .form-group 
+                  div(style='float:right')
+                    button.btn.btn-dark.btn-sm Filter
+
+  .modal.fade#viewproperties(tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
+    .modal-dialog.modal-lg
+      .modal-content
+        .modal-header
+          h5#exampleModalCenterTitle.modal-title View Properties
+          button.close(type='button' data-dismiss='modal' aria-label='Close')
+            span(aria-hidden='true') ×
+        .modal-body   
+          .row 
+            .col-md-12
+              #view_properties
+  .modal.fade#addNewOutlet(tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
+    .modal-dialog.modal-sm
+      .modal-content
+        .modal-header
+          h5#exampleModalCenterTitle.modal-title Add New Outlet
+          button.close(type='button' data-dismiss='modal' aria-label='Close')
+            span(aria-hidden='true') ×
+        .modal-body     
+          .row 
+            .col-md-12 
+              form.form(action="/account/add_new_outlet/#{building.id}" method='POST')
+                .form-group 
+                  label(for="product_name") Outlet Name
+                  input.form-control(type="text" name='name' required) 
+                .form-group 
+                  label(for="device_type") Device Id
+                  input.form-control(type="text" name='device_id' required) 
+                .form-group 
+                  label(for="device_type") Ip Address
+                  input.form-control(type="text" name='ip_address' required) 
+
+
+
+                .form-group 
+                  div(style='float:right')
+                    button.btn.btn-dark.btn-sm Save
+
+  .modal.fade#addNewEvent(tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
+    .modal-dialog.modal-sm
+      .modal-content
+        .modal-header
+          h5#exampleModalCenterTitle.modal-title Add New Event / Holiday
+          button.close(type='button' data-dismiss='modal' aria-label='Close')
+            span(aria-hidden='true') ×
+        .modal-body     
+          .row 
+            .col-md-12 
+              form.form(action="/account/add_new_event/#{building.id}" method='POST')
+                .form-group 
+                  label(for="product_name") Event Name
+                  input.form-control(type="text" name='name' required) 
+                .form-group 
+                  label(for="device_type") Start Date
+                  input.form-control(type="date" name='start_date' required) 
+                .form-group 
+                  label(for="device_type") End Date
+                  input.form-control(type="date" name='end_date' required) 
+
+
+
+                .form-group 
+                  div(style='float:right')
+                    button.btn.btn-dark.btn-sm Save

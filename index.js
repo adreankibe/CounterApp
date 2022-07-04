@@ -85,3 +85,49 @@ events()
 app.listen(PORT, () => {
     console.log('App is running on port ' + PORT)
 })
+
+
+
+// functions
+         
+
+// let array = ['Andrew', 'Kibe'];
+
+// array.map((x,index)=>{
+//     console.log(x,index)
+// })
+
+// const name = array.filter((x)=>{
+//     return x === 'Andrew'
+// })
+// console.log(name)
+
+// async function
+// Promises
+
+// function A()
+// {
+// let array = ['Andrew', 'Kibe'];
+
+// array.map((x,index)=>{
+//     console.log(x,index)
+// })
+
+// const name = array.filter((x)=>{
+//     return x === 'Andrew'
+// })
+// console.log(name)
+// }
+// function B()
+// {
+//     console.log('my name is Andrew')
+
+// }
+// async function C()
+// {
+//     await A();
+//     B();
+
+// }
+// C()
+

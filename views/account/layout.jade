@@ -50,9 +50,38 @@ html(lang='en' dir='')
         .sidebar-left.open.rtl-ps-none(data-perfect-scrollbar='' data-suppress-scroll-x='true')
           ul.navigation-left
             li.nav-item
-              a.nav-item-hold(href='/account/')
+              a.nav-item-hold(href='/account/dashboard/')
+                i.nav-icon.i-Dashboard
+                span.nav-text Dashboard
+              .triangle
+
+            li.nav-item
+              a.nav-item-hold(href='/account/outlets/')
                 i.nav-icon.i-Building
-                span.nav-text Buildings
+                span.nav-text Outlets
+              .triangle
+
+
+            li.nav-item
+              a.nav-item-hold(href='/account/events/')
+                i.nav-icon.i-Calendar
+                span.nav-text Events
+              .triangle
+
+            li.nav-item
+              a.nav-item-hold(href='/account/targets/')
+                i.nav-icon.i-Target
+                span.nav-text Target
+              .triangle
+            //- li.nav-item
+            //-   a.nav-item-hold(href='/account/business_hours/')
+            //-     i.nav-icon.i-Clock
+            //-     span.nav-text Business Hours
+            //-   .triangle
+            li.nav-item
+              a.nav-item-hold(href='/account/settings/')
+                i.nav-icon.i-Gear
+                span.nav-text Settings
               .triangle
             
            
@@ -98,156 +127,179 @@ html(lang='en' dir='')
   script(src="https://cdn.datatables.net/buttons/1.6.4/js/buttons.html5.min.js")
   script(src="https://cdn.datatables.net/buttons/1.6.4/js/buttons.print.min.js")
   script(src="/assets/js/general.js")
+  script(type='text/javascript', src='https://www.gstatic.com/charts/loader.js')
   script(src="https://cdn.jsdelivr.net/npm/chart.js")
-  script.
+  script(src='/assets/js/chart.js')
+  script(src='/assets/js/google_graphs.js')
+ 
+
+ 
     
     
-  script.
-    const report_id = document.getElementById("report_id").value;
-    setInterval(()=>{
-      axios.get('/account/realtime_report/'+report_id).then((response)=>{
-         const data = response.data;
+  //- script.
+  //-   const report_id = document.getElementById("report_id").value;
+  //-   setInterval(()=>{
+  //-     axios.get('/account/realtime_report/'+report_id).then((response)=>{
+  //-        const data = response.data;
 
       
-         // totals
+  //-        // totals
          
-         document.getElementById("enter").innerHTML = data.enter;
-         document.getElementById("leave").innerHTML = data.leave;
-         document.getElementById("passings").innerHTML = data.passings;
-         document.getElementById("returns").innerHTML = data.returns;
-         document.getElementById("total_").innerHTML = data.total;
-         console.log(data)
+  //-        document.getElementById("enter").innerHTML = data.enter;
+  //-        document.getElementById("leave").innerHTML = data.leave;
+  //-        document.getElementById("passings").innerHTML = data.passings;
+  //-        document.getElementById("returns").innerHTML = data.returns;
+  //-        document.getElementById("total_").innerHTML = data.total;
+  //-        console.log(data)
         
          
 
-      }).catch((error)=>{
-        console.log(error)
-      })
-    },5000)
+  //-     }).catch((error)=>{
+  //-       console.log(error)
+  //-     })
+  //-   },5000)
   
-  script.
-    const building_id = document.getElementById("building_id").value;
-    const labels = JSON.parse(document.getElementById("labels").value);
+  //- script.
+  //-   const building_id = document.getElementById("building_id").value;
+  //-   const labels = JSON.parse(document.getElementById("labels").value);
     
-    const data = {
-      labels: labels,
-      datasets: [{
-        label: 'Todays Report',
-        data: JSON.parse(document.getElementById("data").value),
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(255, 159, 64, 0.2)',
-          'rgba(255, 205, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(201, 203, 207, 0.2)'
-        ],
-        borderColor: [
-          'rgb(255, 99, 132)',
-          'rgb(255, 159, 64)',
-          'rgb(255, 205, 86)',
-          'rgb(75, 192, 192)',
-          'rgb(54, 162, 235)',
-          'rgb(153, 102, 255)',
-          'rgb(201, 203, 207)'
-        ],
-        borderWidth: 1
-      }]
-    };
-    const config = {
-      type: 'bar',
-      data: data,
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true
-          }
-        }
-      },
-    };
-    const myChart = new Chart(
-    document.getElementById('myChart'),
-      config
-    );
-    setInterval(()=>{
-      axios.get('/account/realtime/'+building_id).then((response)=>{
-         const data = response.data;
-         console.log(data)
-         // totals
-         document.getElementById("todays_total").innerHTML = data.todays_total;
-         document.getElementById("weeks_total").innerHTML = data.weeks_total;
-         document.getElementById("month_total").innerHTML = data.month_total;
-         // graphest
+  //-   const data = {
+  //-     labels: labels,
+  //-     datasets: [{
+  //-       label: 'Todays Report',
+  //-       data: JSON.parse(document.getElementById("data").value),
+  //-       backgroundColor: [
+  //-         'rgba(255, 99, 132, 0.2)',
+  //-         'rgba(255, 159, 64, 0.2)',
+  //-         'rgba(255, 205, 86, 0.2)',
+  //-         'rgba(75, 192, 192, 0.2)',
+  //-         'rgba(54, 162, 235, 0.2)',
+  //-         'rgba(153, 102, 255, 0.2)',
+  //-         'rgba(201, 203, 207, 0.2)'
+  //-       ],
+  //-       borderColor: [
+  //-         'rgb(255, 99, 132)',
+  //-         'rgb(255, 159, 64)',
+  //-         'rgb(255, 205, 86)',
+  //-         'rgb(75, 192, 192)',
+  //-         'rgb(54, 162, 235)',
+  //-         'rgb(153, 102, 255)',
+  //-         'rgb(201, 203, 207)'
+  //-       ],
+  //-       borderWidth: 1
+  //-     }]
+  //-   };
+  //-   const config = {
+  //-     type: 'bar',
+  //-     data: data,
+  //-     options: {
+  //-       scales: {
+  //-         y: {
+  //-           beginAtZero: true
+  //-         }
+  //-       }
+  //-     },
+  //-   };
+  //-   const myChart = new Chart(
+  //-   document.getElementById('myChart'),
+  //-     config
+  //-   );
+  //-   setInterval(()=>{
+  //-     axios.get('/account/realtime/'+building_id).then((response)=>{
+  //-        const data = response.data;
+  //-        console.log(data)
+  //-        // totals
+  //-        document.getElementById("todays_total").innerHTML = data.todays_total;
+  //-        document.getElementById("weeks_total").innerHTML = data.weeks_total;
+  //-        document.getElementById("month_total").innerHTML = data.month_total;
+  //-        // graphest
 
-         // events
-         let event = data.event;
-         if(event !== null)
-         {
+  //-        // events
+  //-        let event = data.event;
+  //-        if(event !== null)
+  //-        {
           
-             let id = 'e_'+event._id
-             document.getElementById(id).innerHTML = event.total
+  //-            let id = 'e_'+event._id
+  //-            document.getElementById(id).innerHTML = event.total
            
-         }
-        myChart.data.datasets[0].data = data.data;
-        myChart.data.labels = data.labels;
-        myChart.update();
+  //-        }
+  //-       myChart.data.datasets[0].data = data.data;
+  //-       myChart.data.labels = data.labels;
+  //-       myChart.update();
 
-      }).catch((error)=>{
-        console.log(error)
-      })
+  //-     }).catch((error)=>{
+  //-       console.log(error)
+  //-     })
 
-    },5000)
+  //-   },5000)
   
-  script.
-   $('#report_breakdown').on('show.bs.modal', function (event) {
-      var button = $(event.relatedTarget) // Button that triggered the modal
-      var data = button.data('whatever') // Extract info from data-* attributes
+  //- script.
+  //-  $('#report_breakdown').on('show.bs.modal', function (event) {
+  //-     var button = $(event.relatedTarget) // Button that triggered the modal
+  //-     var data = button.data('whatever') // Extract info from data-* attributes
 
-      var count = data.count
+  //-     var count = data.count
       
-      let html = `
-      <table class='table'>
-       <thead>
-        <tr>
-         <th>Date</th>
-         <th>Start Time</th>
-         <th>End Time</th>
-         <th>Entry</th>
-         <th>Leave</th>
-         <th>Pass</th>
-         <th>Return</th>
-        </tr>
-       </thead>
-       <tbody>
-        ${
-          count.length < 1 ? `
-          <tr>
-          <td style='text-align:center' colspan=7>No data found</td>
-          </tr>`
-          :`
-            ${
-              count.slice(0).reverse().map((x)=>{
-                return `<tr>
-                <td>${data.date}</td>
-                <td>${x.StartTime}</td>
-                <td>${x.EndTime}</td>
-                <td>${x.Enters}</td>
-                <td>${x.Exits}</td>
-                <td>${x.Passings}</td>
-                <td>${x.Returns}</td>
-                </tr>`
-              }).join(' ')
-            }
-          `
-        }
-       </tbody>
-      </table>
-      `
-      document.getElementById("breakdown_data").innerHTML = html;
+  //-     let html = `
+  //-     <table class='table'>
+  //-      <thead>
+  //-       <tr>
+  //-        <th>Date</th>
+  //-        <th>Start Time</th>
+  //-        <th>End Time</th>
+  //-        <th>Entry</th>
+  //-        <th>Leave</th>
+  //-        <th>Pass</th>
+  //-        <th>Return</th>
+  //-       </tr>
+  //-      </thead>
+  //-      <tbody>
+  //-       ${
+  //-         count.length < 1 ? `
+  //-         <tr>
+  //-         <td style='text-align:center' colspan=7>No data found</td>
+  //-         </tr>`
+  //-         :`
+  //-           ${
+  //-             count.slice(0).reverse().map((x)=>{
+  //-               return `<tr>
+  //-               <td>${data.date}</td>
+  //-               <td>${x.StartTime}</td>
+  //-               <td>${x.EndTime}</td>
+  //-               <td>${x.Enters}</td>
+  //-               <td>${x.Exits}</td>
+  //-               <td>${x.Passings}</td>
+  //-               <td>${x.Returns}</td>
+  //-               </tr>`
+  //-             }).join(' ')
+  //-           }
+  //-         `
+  //-       }
+  //-      </tbody>
+  //-     </table>
+  //-     `
+  //-     document.getElementById("breakdown_data").innerHTML = html;
      
 
         
+  //-   })
+
+  
+  script.
+    $('#updateTarget').on('show.bs.modal',function(event){
+    var button = $(event.relatedTarget);
+    var x = button.data('whatever');
+    document.getElementById('target_id').value = x._id;
+    document.getElementById('maximum_value').value = x.maximum_value;
+
+    })
+  script.
+    $('#updateoutlet').on('show.bs.modal',function(event){
+    var button = $(event.relatedTarget);
+    var outlet = button.data('whatever');
+    document.getElementById('outlet_id').value = outlet._id;
+    document.getElementById('outlet_name').value = outlet.outlet_name;
+
     })
   script.
    $('#viewproperties').on('show.bs.modal', function (event) {

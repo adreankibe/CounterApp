@@ -1,0 +1,81 @@
+extend ../layout.jade
+
+block content 
+ .row 
+  .col-md-12 
+   div(style='float:right')
+    button.btn.btn-dark.btn-sm(data-toggle='modal' data-target='#add_new_target') Add New Target 
+ .row.mt-5
+  .col-md-12
+   .card.card-shadow
+    .card-header
+     strong Targets
+    .card-body
+     table.table.mytable(style='width:100%')
+         thead
+             tr
+                 th Period
+                 th Maximum Value
+                 th Actions        
+         tbody
+          each x in targets
+           tr 
+            td=x.period
+            td=x.maximum_value
+            td
+             .dropdown.show
+                       a#dropdownMenuLink.dropdown-toggle(href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
+                          | More Options
+                       .dropdown-menu(aria-labelledby='dropdownMenuLink')
+                          a.dropdown-item(href="/account/delete_target/#{x.id}" method= "POST") Delete Target
+                          a.dropdown-item(data-toggle='modal' data-target='#updateTarget' class="btn btn-default" data-whatever='#{JSON.stringify(x)}') Update Target
+
+block modals 
+ .modal.fade#add_new_target(tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
+    .modal-dialog.modal-sm
+      .modal-content
+        .modal-header
+          h5#exampleModalCenterTitle.modal-title Add New Target
+          button.close(type='button' data-dismiss='modal' aria-label='Close')
+            span(aria-hidden='true') ×
+        .modal-body     
+          .row 
+            .col-md-12 
+              form.form(action="/account/create_target" method='POST')
+                .form-group 
+                  label(for="period") Period
+                  select.form-control(type="text" name='period' required)
+                   option(value="") -- Select --
+                   option(value="Daily") Daily 
+                   option(value="Weekly") Weekly 
+                   option(value="Monthly") Monthly    
+                
+                .form-group 
+                  label(for="maximum_value") Maximum Value
+                  input.form-control(type="number" name='maximum_value' min=1 required)
+
+                .form-group 
+                  div(style='float:right')
+                    button.btn.btn-dark.btn-sm Save
+
+
+  .modal.fade#updateTarget(tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
+    .modal-dialog.modal-sm
+      .modal-content
+        .modal-header
+          h5#exampleModalCenterTitle.modal-title Update Target
+          button.close(type='button' data-dismiss='modal' aria-label='Close')
+            span(aria-hidden='true') ×
+        .modal-body     
+          .row 
+            .col-md-12 
+              form.form(action="/account/edit_target" method='POST')
+                .form-group 
+                  label(for="device_type") Maximum value
+                  input#target_id(type="hidden" name='target_id')
+                  input.form-control#maximum_value(type="number" name='maximum_value' required) 
+
+                .form-group 
+                  div(style='float:right')
+                    button.btn.btn-dark.btn-sm Update
+

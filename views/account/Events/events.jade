@@ -1,0 +1,67 @@
+extend ../layout.jade
+
+block content 
+ .row 
+  .col-md-12 
+   div(style='float:right')
+    button.btn.btn-dark.btn-sm(data-toggle='modal' data-target='#add_new_event')  Add New Event 
+ .row.mt-5
+  .col-md-12
+   .card.card-shadow
+    .card-header
+     strong Events
+    .card-body
+     table.table.mytable(style='width:100%')
+         thead
+             tr
+                 th Event Name
+                 th Start Date
+                 th End Date
+                 th Total Entries
+                 th Actions
+                
+
+         tbody
+          each event in events 
+           tr 
+            td=event.name 
+            td=event.start_date 
+            td=event.end_date
+            td=event.count
+             td
+                .dropdown.show
+                a#dropdownMenuLink.dropdown-toggle(href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
+                    | More Options
+                .dropdown-menu(aria-labelledby='dropdownMenuLink')
+                    a.dropdown-item(href="/account/delete_event/#{event.id}" method= "POST") Delete Event
+
+block modals
+  .modal.fade#add_new_event(tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
+    .modal-dialog.modal-sm
+      .modal-content
+        .modal-header
+          h5#exampleModalCenterTitle.modal-title Add New Event
+          button.close(type='button' data-dismiss='modal' aria-label='Close')
+            span(aria-hidden='true') ×
+        .modal-body     
+          .row 
+            .col-md-12 
+              form.form(action="/account/add_new_event" method='POST')
+                .form-group 
+                  label(for="device_type") Event Name
+                  input.form-control(type="text" name='name' required)
+                
+                .form-group 
+                  label(for="device_type") Start Date
+                  input.form-control(type="date" name='start_date' required)
+
+                .form-group 
+                  label(for="device_type") End Date
+                  input.form-control(type="date" name='end_date' required)  
+
+                .form-group 
+                  div(style='float:right')
+                    button.btn.btn-dark.btn-sm Save
+
+
+

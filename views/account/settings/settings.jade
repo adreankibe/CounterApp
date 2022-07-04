@@ -1,0 +1,56 @@
+extend ../layout.jade
+
+block content
+
+    .row
+        .col-md-12
+            h4(style='font-weight:bold') Settings
+
+
+    .row.mt-3
+        .col-md-6 
+         .card 
+          .card-header 
+           strong Report Recipients
+
+          .card-body
+             table.table.mytable(style='width:100%')
+                         thead
+                             tr
+                                 th Recipient Name
+                                 th Email Address 
+                                 th Actions
+
+                                 .dropdown.show
+                                    a#dropdownMenuLink.dropdown-toggle(href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
+                                        | More Options
+                                    .dropdown-menu(aria-labelledby='dropdownMenuLink')
+                                        a.dropdown-item(href="/account/delete_outlet/" method= "POST") Remove Recipient
+
+
+
+
+        .col-md-6 
+         .card 
+          .card-header 
+           strong Smtp Settings
+
+          .card-body
+             table.table.mytable(style='width:100%')
+                         thead
+                             tr
+                                 th Email
+                                 th Host 
+                                 th Port
+                                 th Password
+                                 th Type 
+                                 th Actions
+                         tbody 
+
+
+                            .dropdown.show
+                            a#dropdownMenuLink.dropdown-toggle(href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
+                                | More Options
+                            .dropdown-menu(aria-labelledby='dropdownMenuLink')
+                                a.dropdown-item(href="/account/delete_outlet/" method= "POST") Delete
+                                    
